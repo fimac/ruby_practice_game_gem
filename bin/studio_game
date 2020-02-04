@@ -1,0 +1,25 @@
+#!/usr/bin/env ruby
+
+require_relative '../lib/studio_game/game'
+require_relative '../lib/studio_game/clumsy_player'
+
+bazingos = StudioGame::Game.new("Bazingo")
+default_player_file = File.join(File.dirname(__FILE__), 'players.csv')
+bazingos.load_players(ARGV.shift || default_player_file)
+# 
+
+loop do
+  puts "\nHow many plays ('quit' to exit)"
+  answer = gets.chomp.downcase
+    case answer
+      when /^\d+$/
+        bazingos.play(answer.to_i)
+      when 'quit', 'exit'
+        bazingos.print_stats
+        break
+      else
+        puts "please enter a number of quit"
+    end
+end
+
+bazingos.save_high_scores
